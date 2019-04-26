@@ -12,6 +12,7 @@
 /*Definición de funciones*/
 void evaluapoli(int n, double *f, double x);
 double factorial(int n);
+double potencia(double x, int y);
 /**Variables globales**/
 double p=0; //p es el valor del polinomio en el punto x
 /**Cuerpo del programa.*/
@@ -19,18 +20,17 @@ int main(){
     system("clear");
     int i, n=0, prod = -1;
     double f[MAX]; // Define el arreglo para los valores de los coeficientes del polinomio
-    double x; //Valor ha evaluar con la serie del coseno
+    float x; //Valor ha evaluar con la serie del coseno
     double coseno=0;
     //Introduce el grado del polinomio
     printf("Aproximacion polinomica para el coseno (grado) = ? ");
     scanf("%d",&n); 
     // Se generan los coeficientes del polinomio
-    for (i = 0; i <= n; i+=2) {      
-        prod *= -1;     
-        f[i] = prod * (1/factorial(i));
+    for (i = 0; i <= n; i++) {      
+        f[i] = potencia(-1,i) * (1/factorial(2*i));
     }
 /* Se suman los coeficientes de los polinomios */
-    for (i = 0; i < n; i+=2) {  
+    for (i = 0; i < n; i++) {  
         coseno+=f[i];
         printf("f[%d] = %.4f\n",i,f[i]);
     }
@@ -38,6 +38,10 @@ int main(){
     // Se introduce el valor de x
     scanf("%f",&x); 
     printf("\nEl valor de x= %f\n",x);
+    /*Se calcula la serie con el valor de x*/
+    for (i = 0; i <= n; i++) {      
+        f[i] = potencia(-1,i) * (potencia(x,2*i)/factorial(2*i));
+    }
     /* Esta es la función que evalua el polinomio en el punto x. Evita el uso 
      * de una fórmula con la función pow de la libreria math.h */
     evaluapoli(n, f, x);
@@ -71,4 +75,13 @@ double factorial(int n){
     for (i = n; i >= 1; i--)
         factor *= i;
     return factor;  
+}
+/**Potencia de un número**/
+double potencia(double x, int y){
+    int i;
+    double pot=1;
+    for(i=0; i<y; i++){
+        pot*=x;
+    }
+    return pot;
 }
